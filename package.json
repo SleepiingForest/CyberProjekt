@@ -1,0 +1,18 @@
+{
+  "name": "CyberProjekt",
+  "version": "0.0.0",
+  "description": "Cyber project by Pb_SleepingForest",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SleepiingForest/CyberProjekt.git"
+  },
+  "author": "SleepiingForest",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/SleepiingForest/CyberProjekt/issues"
+  }
+}
