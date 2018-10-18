@@ -14,5 +14,8 @@
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/SleepiingForest/CyberProjekt/issues"
+  },
+  "dependencies": {
+    "express": "~4.16.4"
   }
 }
