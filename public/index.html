@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Dashboard</title>
+    <title>Celsius copies - Comptes</title>
 
     <!-- Bootstrap core CSS-->
     <link href="public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -130,7 +130,18 @@
             </li>
             <li class="breadcrumb-item active">Overview</li>
           </ol>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
 
+              <form id="ajout_compte">
+                <label for="nom">Nom</label> <input style = "" type="text" placeholder="Entrez un pseudo" id="nom" class="champ" /><br /><br />  
+                         
+                <label for="nb_copies">Nombre de copies</label> <input type="text" placeholder= 0 id="nb_copies" class="champ" /><br /><br />            
+                <input type="submit" id="ajouter" value="Ajouter" />            
+              </form>
+              <div id="retour_form" style="display:none"></div> 
+            </li>
+          </ol>
           <!-- Accounts Example -->
             <div class="card-body">
               <div class="table-responsive">
@@ -220,6 +231,7 @@
       </div>
     </div>
 
+    
     <!-- Bootstrap core JavaScript-->
     <script src="public/vendor/jquery/jquery.min.js"></script>
     <script src="public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -238,6 +250,9 @@
     <!-- Demo scripts for this page-->
     <script src="public/js/demo/datatables-demo.js"></script>
     <script src="public/js/demo/chart-area-demo.js"></script>
+
+    <!-- Script de traitements des formulaires-->
+    <script src="public/processing_form.js"></script>
 
   </body>
 

@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS comptes (
+ nom Varchar(50),
+ nb_copies integer,
+ date_creation date,
+ PRIMARY KEY (nom)
+
+);
+
+CREATE TABLE IF NOT EXISTS actions (
+ id_action integer NOT NULL AUTO_INCREMENT,
+ date_action date,
+ nb_copie integer,
+ type_action integer,
+ nom_comptes Varchar(50),
+ PRIMARY KEY (id_action),
+ FOREIGN KEY (nom_comptes) REFERENCES comptes (nom)
+ ON DELETE CASCADE
+);
+
+COMMIT;
