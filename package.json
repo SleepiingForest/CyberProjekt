@@ -16,6 +16,9 @@
     "url": "https://github.com/SleepiingForest/CyberProjekt/issues"
   },
   "dependencies": {
-    "express": "~4.16.4"
+    "express": "~4.16.4",
+    "popper.js": "~1.14.4",
+    "jquery": "~3.3.1",
+    "bootstrap": "~4.1.3"
   }
 }
