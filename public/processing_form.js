@@ -1,11 +1,28 @@
-$(document).ready(function(){
+//Pour récupérer tous les comptes et les afficher
+function afficherComptes(){
 
-    
-
-    $('#nom').on('input',function(e){
+    $.get( "/comptes", {
         
-    });
+    }, function( data ) {
+        $('#table_comptes').empty();
+       console.log("retour "+ data);
+        data.forEach(row => {
+            
+            $('#table_comptes').append('<tr><td>'+row.nom+'</td><td>'+row.nb_copies+'</td><td></td></tr>');
+        });
+      });
 
+}
+
+$(document).ready(function(){   
+    //affichage des comptes
+    afficherComptes();
+
+
+
+
+
+    //Formulaire d'ajout
     $('#ajout_compte').on('submit', function(e){
         e.preventDefault();
         console.log('nom '+ $('#nom').val());
@@ -48,6 +65,10 @@ $(document).ready(function(){
            $('#retour_form').hide();
            $('#retour_form').append(data);
            $('#retour_form').fadeIn('fast');
+           afficherComptes();
           });
     });
+
+
 });
+

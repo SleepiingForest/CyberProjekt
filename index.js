@@ -75,7 +75,9 @@ app.post('/ajout_compte', function (req, res) {
      
       //Si oui go
       if (typeof row === "undefined") {
-        sql = "INSERT INTO comptes(nom,nb_copies) VALUES('" + nom + "','" + nb_copies + "')";
+
+        var date = new Date();
+        sql = "INSERT INTO comptes(nom,nb_copies,date_creation) VALUES('" + nom + "','" + nb_copies + "','"+date+"')";
         console.log(sql);
         db.run(sql, [], function (err) {
           if (err) {
@@ -101,9 +103,24 @@ app.post('/ajout_compte', function (req, res) {
 //                                                            FIN AJOUT DE COMPTES
 
 
+//                                                            DEBUT RECUPERER TOUT LES COMPTES
 
+app.get('/comptes', function (req, res) {
+  //Ouverture Db
+  let db = new sqlite3.Database('./Database/cyber.db', (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    console.log('Connected to the cyber database.');
+  });
+  var sql = "SELECT * FROM comptes;"
+  db.all(sql,[],function (err, rows ) {
+    res.send(rows);
+  });
+  db.close();
+})
 
-
+//                                                            FIN RECUPERER TOUT LES COMPTES
 
 app.listen(3000, function () {
   console.log('Cyber app listening on port 3000!');
