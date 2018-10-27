@@ -1,5 +1,5 @@
 function testSpecialChar(chaine) {
-    var reg = /^[a-zA-Z0-9]+$/gi
+    var reg = /^[a-zA-Z0-9-\s]+$/gi
     //alert(reg.test(chaine))
     return reg.test(chaine);
 }
@@ -13,9 +13,11 @@ function afficherHistoriqueGlobal() {
 
     }, function (data) {
         $('#table_comptes').empty();
-        console.log("retour historique " + data);
+        //console.log("retour historique " + data);
         $('#table_historique').empty();
         data.forEach(row => {
+
+            //Traitement type Action
             var type_action = '';
             if(row.type_action == 1)
             {
@@ -26,15 +28,41 @@ function afficherHistoriqueGlobal() {
                 type_action = 'Ajout/Retrait de copie(s)';
             }
 
+            //Traitement Date 
+            var parsedDate = new Date(row.date_action);
+
+            var month = parsedDate.getMonth() + 1;
+            var day = parsedDate.getDate();
+            var year = parsedDate.getFullYear();
+            var jourSemaine = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi",
+            "Dimanche"][parsedDate.getDay() - 1];
+            var heures = parsedDate.getHours();
+            var minutes = parsedDate.getMinutes();
+            console.log('month : '+month+' day '+day+'year '+year);
+            if(month < 10)
+            {
+                var tmpMonth = month;
+                month = "0" + tmpMonth;
+            }
+
+            if(day < 10)
+            {
+                var tmpDay = day;
+                day = "0" + tmpDay;
+            }
+
             $('#table_historique').append('<tr><td>'
-            +row.date_action+'</td>' 
+            +jourSemaine+' '+day+'/'+month+'/'+year+' à '+heures+':'+minutes+'</td>' 
             +'<td><div class="dropdown">' 
                 +'<a href="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
                 +row.nom_comptes
                 +'</a>'
-                +'<div class="dropdown-menu infoBox" aria-labelledby="dropdownMenuButton">'
-                  +  '<div class="dropdown-item infoBox">Action</div>'
-              +  '</div>'
+                +'<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">'
+                  +  '<a href="#" id="'+row.nom_comptes+'" class="dropdown-item openModifPopup">Ajouter/Enlever unités</a>'
+                  +  '<a href="#" id="'+row.nom_comptes+'" class="dropdown-item openDetailsPopup">Détails</a>'
+                  +  '<a href="#" id="'+row.nom_comptes+'" class="dropdown-item openSupprimerPopup">Modifier/Supprimer</a>'
+              +  '</div></td>'
+           + '</div>'
            + '</div>'
            + '</td>'
            + '</td><td>'+type_action+'</td><td>' + row.nb_copies + '</td><td>'+row.detail_action+'</td></tr>');
@@ -61,12 +89,16 @@ function afficherComptes() {
                 +'<a href="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
                 +row.nom
                 +'</a>'
-                +'<div class="dropdown-menu infoBox" aria-labelledby="dropdownMenuButton">'
-                  +  '<div class="dropdown-item infoBox">Action</div>'
+                +'<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">'
+                  +  '<a href="#" id="'+row.nom+'" class="dropdown-item openModifPopup">Ajouter/Enlever unités</a>'
+                  +  '<a href="#" id="'+row.nom+'" class="dropdown-item openDetailsPopup">Détails</a>'
+                  +  '<a href="#" id="'+row.nom+'" class="dropdown-item openSupprimerPopup">Modifier/Supprimer</a>'
               +  '</div>'
            + '</div>'
            + '</td>'
-           + '</td><td>' + row.nb_copies + '</td><td></td></tr>');
+           + '</td><td id="'+row.nom+'nbCopies">' + row.nb_copies + '</td><td></td></tr>');
+
+
 
         });
     });
@@ -75,10 +107,16 @@ function afficherComptes() {
 
 function afficherComptesByName(nom) {
     console.log(nom);
+    if(nom == "")
+    {
+        afficherComptes();
+        return;
+    }
+
     if (testSpecialChar(nom)) {
         $.get("/comptesByName", { nom: nom }, function (data) {
             $('#table_comptes').empty();
-            console.log("retour " + data);
+            //console.log("retour " + data);
             data.forEach(row => {
 
                 //$('#table_comptes').append('<tr><td>' + row.nom + '</td><td>' + row.nb_copies + '</td><td></td></tr>');
@@ -87,12 +125,14 @@ function afficherComptesByName(nom) {
                 +'<a href="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
                 +row.nom
                 +'</a>'
-                +'<div class="dropdown-menu infoBox" aria-labelledby="dropdownMenuButton">'
-                  +  '<div class="dropdown-item infoBox">Action</div>'
+                +'<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">'
+                  +  '<a href="#" id="'+row.nom+'" class="dropdown-item openModifPopup">Ajouter/Enlever unités</a>'
+                  +  '<a href="#" id="'+row.nom+'" class="dropdown-item openDetailsPopup">Détails</a>'
+                  +  '<a href="#" id="'+row.nom+'" class="dropdown-item openSupprimerPopup">Modifier/Supprimer</a>'
               +  '</div>'
            + '</div>'
            + '</td>'
-           + '</td><td>' + row.nb_copies + '</td><td></td></tr>');
+           + '</td><td id="'+row.nom+'nbCopies">' + row.nb_copies + '</td><td></td></tr>');
 
 
 
@@ -117,7 +157,8 @@ function afficherComptesByName(nom) {
 function afficherPage()
 {
     afficherHistoriqueGlobal();
-    afficherComptes();
+    console.log($('#recherche_compte').val());
+    afficherComptesByName($('#recherche_compte').val());
 }
 
 $(document).ready(function () {
@@ -185,13 +226,95 @@ $(document).ready(function () {
 
     //FORM RECHERCHE COMPTES
     $('#recherche_compte').on('input', function (e) {
-        console.log($('#recherche_compte').val());
+        //console.log($('#recherche_compte').val());
         afficherComptesByName($('#recherche_compte').val());
     });
 
-    $(".infoBox").click(function(event){
-        alert("hello");
-        event.preventDefault();
+    
+
+    //Gestion de la popup de modification du nombre de copies
+    
+    $('#popupModifCopieNbModif').on('input', function (e) {
+
+        nbCopies = $('#popupModifCopieNbRestantHide').html();
+        inputNb = $(this).val();
+        var newNb = nbCopies;
+        if($(this).val() == "")
+        {
+            inputNb = 0;
+        }
+        try{
+            newNb = eval( nbCopies +"+"+ inputNb);
+        }
+        catch(e){
+            return;
+        }
+        $('#popupModifCopieNbRestant').empty();
+        $('#popupModifCopieNbRestant').append(newNb);
     });
+
+    $(document).on('click', '.openModifPopup',function(){ 
+        $('#popupModifCopieNomCompte').empty();
+        $('#popupModifCopieNbRestant').empty();
+        $('#popupModifCopieNbRestantHide').empty();
+        $('#popupModifCopieNomCompteHide').empty();
+
+        console.log($(this).attr("id"));
+       $('#popupModifCopieNomCompte').append('<b>'+$(this).attr("id")+'</b>');
+
+        //Recup des infos comptes
+        nbCopies = "[id='"+$(this).attr('id')+"nbCopies']";
+        $('#popupModifCopieNbRestant').append($(nbCopies).html());
+        $('#popupModifCopieNbRestantHide').append($(nbCopies).html());
+        $('#popupModifCopieNomCompteHide').append($(this).attr("id"));
+        $('#popupModifCopie').show();      
+    });
+    
+    $(document).on('click', '#popupModifCopieClose',function(){ 
+        $('#popupModifCopieNbModif').val('');
+        $('#popupModifCopie').hide();      
+    });
+
+    $(document).on('click', '#popupCloseArrow',function(){ 
+        $('#popupModifCopieNbModif').val('');
+        $('#popupModifCopie').hide();      
+    });
+
+    //Sauvegarde de la modification dans la base
+    $(document).on('click', '#popupModifCopieSave',function(){ 
+
+        var nb_copies = $('#popupModifCopieNbModif').val();
+        var nom =  $('#popupModifCopieNomCompteHide').html();
+        
+
+        try{
+            var nb_copies_eval = eval(nb_copies);
+
+
+
+            var new_nb_copies_eval = eval($('#popupModifCopieNbRestantHide').html() +"+"+ nb_copies_eval);
+
+            $.post("/modiferNbCopies", {
+                nom: nom,
+                nb_copies: nb_copies,
+                nb_copies_eval: nb_copies_eval,
+                new_nb_copies_eval: new_nb_copies_eval
+
+            }, function (data) {
+    
+                $('#popupModifCopieNbModif').val('');
+                $('#popupModifCopie').hide();  
+
+            });
+            
+
+        }
+        catch(e){
+            alert(e);
+            return;
+        }
+        afficherPage();
+    });
+
 });
 

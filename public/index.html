@@ -157,7 +157,7 @@
                     <tr>
                       <th>Nom du compte</th>
                       <th>Unités restantes</th>
-                      <th>Modifier</th>                      
+                      <th>Date de création</th>                      
                     </tr>
                   </thead>
                     
@@ -198,9 +198,32 @@
         </div>
         
         
+        <!-- MODAL MODI COPIE -->
         
-        
-        
+        <div id="popupModifCopie" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Ajout/Retrait d'unités</h5>
+                  <button type="button" id="popupCloseArrow" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p id="popupModifCopieNomCompte" ></p> 
+                  <div style="display: none;" id="popupModifCopieNbRestantHide"></div>
+                  <div style="display: none;" id="popupModifCopieNomCompteHide"></div>
+                  <div><i>Après modification : </i><p id="popupModifCopieNbRestant"></p> </div>                
+                  <label for="nb_copies">Nombre d'unités</label> <input type="text" placeholder= 0 id="popupModifCopieNbModif" class="champ" />
+                  
+                </div>
+                <div class="modal-footer">
+                  <button id = "popupModifCopieSave" type="button" class="btn btn-primary">Save changes</button>
+                  <button id = "popupModifCopieClose" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
         
         
         

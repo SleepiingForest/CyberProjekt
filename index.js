@@ -160,6 +160,26 @@ app.get('/comptesByName', function (req, res) {
 })
 
 //                                                            FIN RECUPERER COMPTES BY NAME
+//                                                            DEBUT RECUPERER UN COMPTE BY NAME
+app.get('/compteByName', function (req, res) {
+  console.log('GetComptesByName');
+  var nom = req.query.nom;
+  console.log(nom);
+  //Ouverture Db
+  let db = new sqlite3.Database('./Database/cyber.db', (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    //console.log('Connected to the cyber database.');
+  });
+  var sql = "SELECT * FROM comptes WHERE nom like '"+nom+"';"
+  db.all(sql,[],function (err, rows ) {
+    res.send(rows);
+  });
+  db.close();
+})
+//                                                            FIN RECUPERER UN COMPTE BY NAME
+
 //                                                            DEBUT HISTORIQUE GLOBAL
 app.get('/historiqueGlobal', function (req, res) {
   console.log('GetHistorique');
@@ -177,7 +197,44 @@ app.get('/historiqueGlobal', function (req, res) {
   db.close();
 })
 //                                                            FIN HISTOTRIQUE GLOBAL
+//                                                            DEBUT MODIFIER NOMBRE COPIES
+app.post('/modiferNbCopies', function (req, res) {
+  console.log('modiferNbCopies');
+  //Ouverture Db
+  let db = new sqlite3.Database('./Database/cyber.db', (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    //console.log('Connected to the cyber database.');
+  });
+  date = new Date();
+  nb_copies = req.body.nb_copies_eval;
+  detail_action = req.body.nb_copies;
+  new_nb_copies = req.body.new_nb_copies_eval;
+  nom = req.body.nom;
 
+  console.log(nb_copies+' '+detail_action+' '+new_nb_copies+ ' '+nom);
+  //TABLE ACTIONS
+  sql = "INSERT INTO actions(date_action,nb_copies,type_action,detail_action,nom_comptes) VALUES('" + date + "','" + nb_copies + "','2','" + detail_action + "','" + nom + "')";      
+  db.run(sql, [], function (err) {
+    if (err) {
+      return console.log(err.message);
+    }
+    
+  });
+
+  //TABLES COMPTES
+  sql = "UPDATE comptes SET nb_copies = '"+new_nb_copies+"' WHERE nom = '"+nom+"'";      
+  db.run(sql, [], function (err) {
+    if (err) {
+      return console.log(err.message);
+    }
+    
+  });
+
+  db.close();
+})
+//                                                            FIN MODIFIER NOMBRE COPIES
 app.listen(3000, function () {
   console.log('Cyber app listening on port 3000!');
 })
