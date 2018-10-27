@@ -39,6 +39,9 @@
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
        
       </div>
+      
+      
+
 
       <!-- Navbar -->
       <ul class="navbar-nav ml-auto ml-md-0">
@@ -134,7 +137,7 @@
             <li class="breadcrumb-item">
 
               <form id="ajout_compte">
-                <label for="nom">Nom</label> <input style = "" type="text" placeholder="Entrez un pseudo" id="nom" class="champ" /><br /><br />  
+                <label for="nom">Nom</label> <input type="text" placeholder="Entrez un pseudo" id="nom" class="champ" /><br /><br />  
                          
                 <label for="nb_copies">Nombre de copies</label> <input type="text" placeholder= 0 id="nb_copies" class="champ" /><br /><br />            
                 <input type="submit" id="ajouter" value="Ajouter" />            
@@ -142,53 +145,71 @@
               <div id="retour_form" style="display:none"></div> 
             </li>
           </ol>
-          <!-- Accounts Example -->
+         
+          <!-- TABLES ACCOUNTS -->
+          <label for="recherche_compte">Rechercher</label><input type="text" placeholder="Entrez un pseudo" id="recherche_compte" class="champ" />
+          <div id="retour_form_recherche"></div>
             <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+               <div class="table-responsive"> 
+                
+                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Nom</th>
-                      <th>Copies restantes</th>
+                      <th>Nom du compte</th>
+                      <th>Unités restantes</th>
                       <th>Modifier</th>                      
                     </tr>
                   </thead>
-                  <!--<tfoot>
-                    <tr>
-                      <th>Nom</th>
-                      <th>Copies restantes</th>
-                      <th>Modifier</th>
-                      <th>Copies restantes après modification</th>
-                    </tr>
-                  </tfoot>-->
+                    
                   <tbody id="table_comptes">
-                    <tr>
-                      <td>Tiger Nixon</td>
-                      <td>18</td>
-                      <td></td>
-
-                    </tr>
-                    <tr>
-                      <td>Garrett Winters</td>
-                      <td>18</td>
-                      <td></td>
-
-                    </tr>
-                    <tr>
-                      <td>Ashton Cox</td>
-                      <td>18</td>
-                      <td></td>
-
-                    </tr>
+                    
                    
                   </tbody>
                 </table>
-              </div>
+               </div> 
             </div>
             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+
+            <!-- HISTORIQUE RECENT -->
+            <div> HISTORIQUE RECENT</div>
+            <div class="card-body">
+                <div class="table-responsive"> 
+                 
+                 <table class="table table-bordered" id="" width="100%" cellspacing="0">
+                   <thead>
+                     <tr>
+                       <th>Date</th>
+                       <th>Nom du compte</th>
+                       <th>Action</th>
+                       <th>Nombre d'unités</th>      
+                       <th>Détails</th>                 
+                     </tr>
+                   </thead>
+                     
+                   <tbody id="table_historique">
+                     
+                    
+                   </tbody>
+                 </table>
+                </div> 
+             </div>
           </div>
 
         </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <!-- /.container-fluid -->
 
         <!-- Sticky Footer -->

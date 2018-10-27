@@ -8,8 +8,10 @@ CREATE TABLE IF NOT EXISTS comptes (
 CREATE TABLE IF NOT EXISTS actions (
  id_action INTEGER PRIMARY KEY,
  date_action DATE,
- nb_copie INTEGER,
+ nb_copies_nb INTEGER,
+ nb_copies_couleurs INTEGER,
  type_action INTEGER,
+ detail_action VARCHAR(50),
  nom_comptes VARCHAR(50),
  FOREIGN KEY (nom_comptes) REFERENCES comptes (nom)
 );
